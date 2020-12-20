@@ -1,0 +1,13 @@
+{
+  "name": "resource-bookings",
+  "uuid": "",
+  "properties": null,
+  "zomes": {
+    "file_storage": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/file_storage.wasm"
+    },
+    "compository": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/compository.wasm"
+    }
+  }
+}

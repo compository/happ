@@ -1,0 +1,17 @@
+[package]
+authors = ["guillem.cordoba@gmail.com"]
+edition = "2018"
+name = "compository"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "compository"
+
+[dependencies]
+derive_more = "0"
+serde = "1"
+
+hc_utils = "0"
+hdk3 = "0"
+holo_hash = "0"

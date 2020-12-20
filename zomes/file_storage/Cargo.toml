@@ -1,0 +1,17 @@
+[package]
+authors = ["guillem.cordoba@gmail.com"]
+edition = "2018"
+name = "file_storage"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "file_storage"
+
+[dependencies]
+derive_more = "0"
+serde = "1"
+
+file_storage = {git = "https://github.com/holochain-open-dev/file-storage-module", branch = "main", package = "file_storage"}
+hc_utils = "0"
+hdk3 = "0"

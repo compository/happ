@@ -1,5 +1,6 @@
 use hc_utils::{WrappedDnaHash, WrappedEntryHash};
-use hdk3::prelude::*;
+use hdk3::{hash_path::path::Component, prelude::*};
+use std::convert::TryFrom;
 
 use crate::utils;
 
@@ -57,6 +58,31 @@ pub fn publish_instantiated_dna(input: PublishInstantiatedDnaInput) -> ExternRes
     )?;
 
     Ok(())
+}
+
+#[derive(Serialize, SerializedBytes, Deserialize, Clone)]
+pub struct GetInstantiatedDnasOutput(Vec<String>);
+#[hdk_extern]
+pub fn get_all_instantiated_dnas(_: ()) -> ExternResult<GetInstantiatedDnasOutput> {
+    let path = Path::from("all_instantiated_dnas");
+
+    let children = path.children()?;
+
+    let instantiated_dnas_hashes = children
+        .into_inner()
+        .into_iter()
+        .map(|link| {
+            let child_path = Path::try_from(&link.tag)?;
+
+            let components: Vec<Component> = child_path.into();
+
+            let hash: String = components.last().unwrap().try_into()?;
+
+            Ok(hash)
+        })
+        .collect::<ExternResult<Vec<String>>>()?;
+
+    Ok(GetInstantiatedDnasOutput(instantiated_dnas_hashes))
 }
 
 #[hdk_extern]

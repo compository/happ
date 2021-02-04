@@ -10,8 +10,8 @@ entry_defs![
     Path::entry_def()
 ];
 
-pub fn err(reason: &str) -> HdkError {
-    HdkError::Wasm(WasmError::CallError(reason.into()))
+pub fn err(reason: &str) -> WasmError {
+    WasmError::CallError(reason.into())
 }
 
 /*

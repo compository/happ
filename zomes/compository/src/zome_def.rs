@@ -37,12 +37,12 @@ pub fn get_zome_def(zome_def_hash: WrappedEntryHash) -> ExternResult<ZomeDef> {
     Ok(zome_def)
 }
 
-#[derive(Serialize, SerializedBytes, Deserialize)]
+#[derive(Serialize, Debug, Deserialize)]
 pub struct HashedZomeDef {
     hash: WrappedEntryHash,
     content: ZomeDef,
 }
-#[derive(Serialize, SerializedBytes, Deserialize)]
+#[derive(Serialize, Debug, Deserialize)]
 pub struct GetZomesOutput(Vec<HashedZomeDef>);
 #[hdk_extern]
 pub fn get_all_zome_defs(_: ()) -> ExternResult<GetZomesOutput> {

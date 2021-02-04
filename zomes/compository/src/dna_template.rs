@@ -4,7 +4,7 @@ use std::convert::TryFrom;
 
 use crate::utils;
 
-#[derive(Serialize, SerializedBytes, Deserialize, Clone)]
+#[derive(Serialize, Debug, SerializedBytes, Deserialize, Clone)]
 pub struct ZomeDefReference {
     name: String,
     zome_def_hash: WrappedEntryHash, // TODO: fix this
@@ -17,13 +17,13 @@ pub struct DnaTemplate {
 }
 
 // This goes as link tag from a dna path to the template dna
-#[derive(Serialize, SerializedBytes, Deserialize, Clone)]
+#[derive(Serialize, Debug, Deserialize, Clone, SerializedBytes)]
 pub struct InstantiatedDnaTag {
     uuid: String,
     properties: SerializedBytes, // TODO: fix this
 }
 
-#[derive(Serialize, SerializedBytes, Deserialize, Clone)]
+#[derive(Serialize, Debug, Deserialize, Clone)]
 pub struct PublishInstantiatedDnaInput {
     dna_template_hash: WrappedEntryHash,
     instantiated_dna_hash: WrappedDnaHash,
@@ -60,7 +60,7 @@ pub fn publish_instantiated_dna(input: PublishInstantiatedDnaInput) -> ExternRes
     Ok(())
 }
 
-#[derive(Serialize, SerializedBytes, Deserialize, Clone)]
+#[derive(Serialize, Debug, Deserialize, Clone)]
 pub struct GetInstantiatedDnasOutput(Vec<String>);
 #[hdk_extern]
 pub fn get_all_instantiated_dnas(_: ()) -> ExternResult<GetInstantiatedDnasOutput> {
@@ -90,7 +90,7 @@ pub fn get_dna_template(dna_template_hash: WrappedEntryHash) -> ExternResult<Dna
     utils::try_get_and_convert(dna_template_hash.0)
 }
 
-#[derive(Serialize, Deserialize, SerializedBytes)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetTemplateOutput {
     dna_template: DnaTemplate,

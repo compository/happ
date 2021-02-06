@@ -1,6 +1,6 @@
 {
-  "name": "resource-bookings",
-  "uuid": "asdfasdf",
+  "name": "compository",
+  "uuid": "",
   "properties": null,
   "zomes": {
     "file_storage": {

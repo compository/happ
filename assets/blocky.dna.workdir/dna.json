@@ -1,0 +1,10 @@
+{
+  "name": "blocky",
+  "uuid": "",
+  "properties": null,
+  "zomes": {
+    "blocky": {
+      "wasm_path": "./blocky.wasm"
+    }
+  }
+}

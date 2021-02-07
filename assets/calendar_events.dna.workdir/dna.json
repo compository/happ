@@ -1,0 +1,11 @@
+{
+  "name": "calendar-events",
+  "uuid": "",
+  "properties": null,
+  "zomes": {
+    "calendar_events": {
+      "wasm_path": "./calendar_events.wasm",
+      "ui_path": "./bundle.js"
+    }
+  }
+}

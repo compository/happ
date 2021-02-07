@@ -1,6 +1,6 @@
 {
   "name": "compository",
-  "uuid": "",
+  "uuid": "0.6",
   "properties": null,
   "zomes": {
     "file_storage": {

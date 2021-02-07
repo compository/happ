@@ -1,0 +1,11 @@
+{
+  "name": "transactor",
+  "uuid": "",
+  "properties": null,
+  "zomes": {
+    "transactor": {
+      "wasm_path": "./transactor.wasm",
+      "ui_path": "./bundle.js"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 use hc_utils::{WrappedDnaHash, WrappedEntryHash};
-use hdk3::{hash_path::path::Component, prelude::*};
+use hdk::prelude::*;
 use std::convert::TryFrom;
+use hdk::hash_path::path::Component;
 
 use crate::utils;
 

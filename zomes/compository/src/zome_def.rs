@@ -1,5 +1,5 @@
 use hc_utils::WrappedEntryHash;
-use hdk3::prelude::*;
+use hdk::prelude::*;
 use holo_hash::WasmHash;
 
 use crate::utils;

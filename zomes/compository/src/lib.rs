@@ -1,4 +1,4 @@
-use hdk3::prelude::*;
+use hdk::prelude::*;
 
 mod dna_template;
 mod utils;
@@ -11,7 +11,7 @@ entry_defs![
 ];
 
 pub fn err(reason: &str) -> WasmError {
-    WasmError::CallError(reason.into())
+    WasmError::Guest(reason.into())
 }
 
 /*

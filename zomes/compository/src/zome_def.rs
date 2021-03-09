@@ -9,7 +9,7 @@ pub struct ZomeDef {
     name: String,
     wasm_file: WrappedEntryHash,
     components_bundle_file: Option<WrappedEntryHash>,
-    wasm_hash: WasmHash,
+    wasm_hash: Option<WasmHash>,
     entry_defs: Vec<String>,
     required_properties: Vec<String>, // TODO: change to map, with property types
     required_membrane_proof: bool,
@@ -24,8 +24,14 @@ pub fn publish_zome(zome: ZomeDef) -> ExternResult<WrappedEntryHash> {
     let path = all_zomes_path();
     path.ensure()?;
 
-    let bytes: SerializedBytes = zome.wasm_hash.try_into()?;
-    create_link(path.hash()?, zome_hash.clone(), bytes.bytes().clone())?;
+    let link_tag: LinkTag = match zome.wasm_hash {
+        Some(wasm_hash) => {
+            let bytes: SerializedBytes = wasm_hash.try_into()?;
+            LinkTag::from(bytes.bytes().clone())
+        }
+        None => LinkTag::from(()),
+    };
+    create_link(path.hash()?, zome_hash.clone(), link_tag)?;
 
     Ok(WrappedEntryHash(zome_hash))
 }

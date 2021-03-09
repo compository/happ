@@ -1,0 +1,10 @@
+---
+manifest_version: "1"
+name: compository
+uuid: 00000000-0000-0000-0000-000000000000
+properties: ~
+zomes: 
+  - name: compository
+    bundled: ../target/wasm32-unknown-unknown/release/compository.wasm
+  - name: file_storage
+    bundled: ../target/wasm32-unknown-unknown/release/file_storage.wasm

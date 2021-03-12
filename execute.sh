@@ -1,10 +1,18 @@
 #!/bin/bash
+
+# redirects everything from localhost:1111 (reachable from the outside) to 127.0.0.1:1235
+# since the conductor binds to 127.0.0.1 instead of localhost
 socat tcp-l:22222,fork,reuseaddr tcp:127.0.0.1:22202 & 
 socat tcp-l:22223,fork,reuseaddr tcp:127.0.0.1:22203 & 
-sleep 15 && wds --root-dir /app --port 8888 &
-sleep 20 && compository -c uhC0klH1NAzmRGd-AKfJ6bw_yWlBxyJITwrzMqZOJ3dSKv4beYKW- -i test-app -u ws://localhost:22223 -w /assets/profiles.dna.workdir/ &&
-compository -c uhC0klH1NAzmRGd-AKfJ6bw_yWlBxyJITwrzMqZOJ3dSKv4beYKW- -i test-app -u ws://localhost:22223 -w /assets/blocky.dna.workdir/ &&
-compository -c uhC0klH1NAzmRGd-AKfJ6bw_yWlBxyJITwrzMqZOJ3dSKv4beYKW- -i test-app -u ws://localhost:22223 -w /assets/file_storage.dna.workdir/ &&
-compository -c uhC0klH1NAzmRGd-AKfJ6bw_yWlBxyJITwrzMqZOJ3dSKv4beYKW- -i test-app -u ws://localhost:22223 -w /assets/calendar_events.dna.workdir/ &&
-compository -c uhC0klH1NAzmRGd-AKfJ6bw_yWlBxyJITwrzMqZOJ3dSKv4beYKW- -i test-app -u ws://localhost:22223 -w /assets/transactor.dna.workdir/ &
-holochain-run-dna -r /database -u kitsune-proxy://CIW6PxKxsPPlcuvUCbMcKwUpaMSmB7kLD8xyyj4mqcw/kitsune-quic/h/proxy.holochain.org/p/5778/-- -a 22202 -p 22203 /dna/compository.dna.gz
+
+sleep 2 && wds --root-dir /app --port 8888 &
+
+### Check if a directory does not exist ###
+if [ ! -d "/database/sandbox" ] 
+then
+    hc sandbox create --root /database -d=sandbox network --bootstrap https://bootstrap-staging.holo.host/ quic -p=kitsune-proxy://sINaxH2sL-n4HminpxHEox5flT-ve_tzMK8NtJw3Fck/kitsune-quic/h/3.141.223.68/p/5778/--
+    hc sandbox call install-app-bundle /happ/compository.happ
+    hc sandbox -f=22202 run ---ports=22203
+else
+    hc sandbox -f=22202 run
+fi

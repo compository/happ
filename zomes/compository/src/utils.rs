@@ -23,11 +23,11 @@ pub fn get_links_and_load_type<R: TryFrom<Entry>>(
 
     let results = link_info
         .iter()
-        .map(|link| {
-            let entry = try_get_and_convert::<R>(link.target.clone())?;
-            Ok((WrappedEntryHash(link.target.clone()), entry))
+        .filter_map(|link| match try_get_and_convert::<R>(link.target.clone()) {
+            Ok(entry) => Some((WrappedEntryHash(link.target.clone()), entry)),
+            Err(_) => None,
         })
-        .collect::<ExternResult<Vec<(WrappedEntryHash, R)>>>()?;
+        .collect();
 
     Ok(results)
 }

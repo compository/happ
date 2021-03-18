@@ -1,10 +1,6 @@
-FROM guillemcordoba/rsm:d3a6144
+FROM guillemcordoba/rsm:9a7219e
 
-RUN apt-get update && apt-get install curl -y
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
-RUN apt-get install -y python3
-
-RUN apt-get install -y unzip
+RUN apt-get install -y python3 unzip
 
 RUN mkdir /happ
 RUN mkdir /database

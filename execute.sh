@@ -14,12 +14,12 @@ then
     hc sandbox create --root /database -d=sandbox network --bootstrap https://bootstrap-staging.holo.host/ quic -p=kitsune-proxy://L6dcjD-I1xg23eU1Gwgxz6Xy1jb9gJmUhcqWAJlVafk/kitsune-quic/h/52.14.147.62/p/22224/-- 
     hc sandbox call install-app-bundle /happ/compository.happ
     mkdir /database/done
-    hc sandbox -f=22202 run --ports=22203
+    RUST_LOG=info hc sandbox -f=22202 run --ports=22203
 else
     # This is the second run: reset keystore and run
 
     #rm -rf /database/sandbox/keystore/socket
     lair-keystore -d /database/sandbox/keystore &
     sleep 7
-    RUST_LOG=debug holochain -c /database/sandbox/conductor-config.yaml 
+    RUST_LOG=info holochain -c /database/sandbox/conductor-config.yaml 
 fi

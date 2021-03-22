@@ -1,0 +1,15 @@
+[package]
+authors = ["guillem.cordoba@gmail.com"]
+edition = "2018"
+name = "file_storage_gateway"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "file_storage_gateway"
+
+[dependencies]
+derive_more = "0"
+serde = "1"
+
+holochain_file_storage_gateway_zome = {git = "https://github.com/holochain-open-dev/file-storage", branch = "main", package = "holochain_file_storage_gateway_zome"}

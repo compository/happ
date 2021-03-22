@@ -6,5 +6,5 @@ properties: ~
 zomes: 
   - name: compository
     bundled: ../target/wasm32-unknown-unknown/release/compository.wasm
-  - name: file_storage
-    bundled: ../target/wasm32-unknown-unknown/release/file_storage.wasm
+  - name: file_storage_gateway
+    url: ../target/wasm32-unknown-unknown/release/file_storage_gateway.wasm

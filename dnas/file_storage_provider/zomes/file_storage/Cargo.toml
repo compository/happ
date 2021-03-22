@@ -12,4 +12,4 @@ name = "file_storage"
 derive_more = "0"
 serde = "1"
 
-file_storage = {git = "https://github.com/holochain-open-dev/file-storage", branch = "main", package = "file_storage"}
+holochain_file_storage_zome = {git = "https://github.com/holochain-open-dev/file-storage", branch = "main", package = "holochain_file_storage_zome"}

@@ -1,4 +1,4 @@
-use hc_utils::{WrappedDnaHash, WrappedEntryHash};
+use holo_hash::{EntryHashB64, DnaHashB64, DnaHash};
 use hdk::prelude::*;
 use std::convert::TryFrom;
 use hdk::hash_path::path::Component;
@@ -8,7 +8,7 @@ use crate::utils;
 #[derive(Serialize, Debug, SerializedBytes, Deserialize, Clone)]
 pub struct ZomeDefReference {
     name: String,
-    zome_def_hash: WrappedEntryHash, // TODO: fix this
+    zome_def_hash: EntryHashB64, // TODO: fix this
 }
 
 #[hdk_entry(id = "dna_template")]
@@ -26,19 +26,19 @@ pub struct InstantiatedDnaTag {
 
 #[derive(Serialize, Debug, Deserialize, Clone)]
 pub struct PublishInstantiatedDnaInput {
-    dna_template_hash: WrappedEntryHash,
-    instantiated_dna_hash: WrappedDnaHash,
+    dna_template_hash: EntryHashB64,
+    instantiated_dna_hash: DnaHashB64,
     uuid: String,
     properties: SerializedBytes, // TODO: fix this
 }
 
 #[hdk_extern]
-pub fn publish_dna_template(dna_template: DnaTemplate) -> ExternResult<WrappedEntryHash> {
+pub fn publish_dna_template(dna_template: DnaTemplate) -> ExternResult<EntryHashB64> {
     create_entry(&dna_template)?;
 
     let hash = hash_entry(&dna_template)?;
 
-    Ok(WrappedEntryHash(hash))
+    Ok(EntryHashB64::from(hash))
 }
 
 #[hdk_extern]
@@ -54,7 +54,7 @@ pub fn publish_instantiated_dna(input: PublishInstantiatedDnaInput) -> ExternRes
     let tag_bytes: SerializedBytes = tag.try_into()?;
     create_link(
         path.hash()?,
-        input.dna_template_hash.0,
+        input.dna_template_hash.into(),
         tag_bytes.bytes().clone(),
     )?;
 
@@ -87,8 +87,8 @@ pub fn get_all_instantiated_dnas(_: ()) -> ExternResult<GetInstantiatedDnasOutpu
 }
 
 #[hdk_extern]
-pub fn get_dna_template(dna_template_hash: WrappedEntryHash) -> ExternResult<DnaTemplate> {
-    utils::try_get_and_convert(dna_template_hash.0)
+pub fn get_dna_template(dna_template_hash: EntryHashB64) -> ExternResult<DnaTemplate> {
+    utils::try_get_and_convert(dna_template_hash.into())
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -99,7 +99,7 @@ pub struct GetTemplateOutput {
     uuid: String,
 }
 #[hdk_extern]
-pub fn get_template_for_dna(dna_hash: WrappedDnaHash) -> ExternResult<GetTemplateOutput> {
+pub fn get_template_for_dna(dna_hash: DnaHashB64) -> ExternResult<GetTemplateOutput> {
     let path = path_for_dna(dna_hash);
     let links = get_links(path.hash()?, None)?;
 
@@ -122,6 +122,6 @@ pub fn get_template_for_dna(dna_hash: WrappedDnaHash) -> ExternResult<GetTemplat
 
 /** Helper functions */
 
-fn path_for_dna(dna_hash: WrappedDnaHash) -> Path {
-    Path::from(format!("all_instantiated_dnas.{}", dna_hash.0))
+fn path_for_dna(dna_hash: DnaHashB64) -> Path {
+    Path::from(format!("all_instantiated_dnas.{}", DnaHash::from(dna_hash)))
 }

@@ -1,14 +1,13 @@
-use hc_utils::WrappedEntryHash;
 use hdk::prelude::*;
-use holo_hash::WasmHash;
+use holo_hash::{WasmHash, EntryHashB64};
 
 use crate::utils;
 
 #[hdk_entry(id = "zome")]
 pub struct ZomeDef {
     name: String,
-    wasm_file: WrappedEntryHash,
-    components_bundle_file: Option<WrappedEntryHash>,
+    wasm_file: EntryHashB64,
+    components_bundle_file: Option<EntryHashB64>,
     wasm_hash: Option<WasmHash>,
     entry_defs: Vec<String>,
     required_properties: Vec<String>, // TODO: change to map, with property types
@@ -16,7 +15,7 @@ pub struct ZomeDef {
 }
 
 #[hdk_extern]
-pub fn publish_zome(zome: ZomeDef) -> ExternResult<WrappedEntryHash> {
+pub fn publish_zome(zome: ZomeDef) -> ExternResult<EntryHashB64> {
     create_entry(&zome)?;
 
     let zome_hash = hash_entry(&zome)?;
@@ -33,19 +32,19 @@ pub fn publish_zome(zome: ZomeDef) -> ExternResult<WrappedEntryHash> {
     };
     create_link(path.hash()?, zome_hash.clone(), link_tag)?;
 
-    Ok(WrappedEntryHash(zome_hash))
+    Ok(EntryHashB64::from(zome_hash))
 }
 
 #[hdk_extern]
-pub fn get_zome_def(zome_def_hash: WrappedEntryHash) -> ExternResult<ZomeDef> {
-    let zome_def = utils::try_get_and_convert(zome_def_hash.0)?;
+pub fn get_zome_def(zome_def_hash: EntryHashB64) -> ExternResult<ZomeDef> {
+    let zome_def = utils::try_get_and_convert(zome_def_hash.into())?;
 
     Ok(zome_def)
 }
 
 #[derive(Serialize, Debug, Deserialize)]
 pub struct HashedZomeDef {
-    hash: WrappedEntryHash,
+    hash: EntryHashB64,
     content: ZomeDef,
 }
 #[derive(Serialize, Debug, Deserialize)]
@@ -53,7 +52,7 @@ pub struct GetZomesOutput(Vec<HashedZomeDef>);
 #[hdk_extern]
 pub fn get_all_zome_defs(_: ()) -> ExternResult<GetZomesOutput> {
     let path = all_zomes_path();
-    let zomes_defs: Vec<(WrappedEntryHash, ZomeDef)> =
+    let zomes_defs: Vec<(EntryHashB64, ZomeDef)> =
         utils::get_links_and_load_type(path.hash()?, None)?;
 
     let result = zomes_defs

@@ -6,7 +6,7 @@ RUN mkdir /happ
 RUN mkdir /database
 RUN mkdir /app
 
-COPY ./happ/compository.happ /happ
+COPY ./workdir/compository.happ /happ
 COPY ./app.zip /
 COPY ./execute.sh /happ
 RUN unzip /app.zip -d /app

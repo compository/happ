@@ -1,4 +1,4 @@
-use hc_utils::WrappedEntryHash;
+use holo_hash::EntryHashB64;
 use hdk::prelude::*;
 
 pub fn try_get_and_convert<T: TryFrom<Entry>>(entry_hash: EntryHash) -> ExternResult<T> {
@@ -18,13 +18,13 @@ pub fn try_from_element<T: TryFrom<Entry>>(element: Element) -> ExternResult<T> 
 pub fn get_links_and_load_type<R: TryFrom<Entry>>(
     base: EntryHash,
     tag: Option<LinkTag>,
-) -> ExternResult<Vec<(WrappedEntryHash, R)>> {
+) -> ExternResult<Vec<(EntryHashB64, R)>> {
     let link_info = get_links(base.into(), tag)?.into_inner();
 
     let results = link_info
         .iter()
         .filter_map(|link| match try_get_and_convert::<R>(link.target.clone()) {
-            Ok(entry) => Some((WrappedEntryHash(link.target.clone()), entry)),
+            Ok(entry) => Some((EntryHashB64::from(link.target.clone()), entry)),
             Err(_) => None,
         })
         .collect();

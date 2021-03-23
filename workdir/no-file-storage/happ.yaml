@@ -1,0 +1,15 @@
+---
+manifest_version: "1"
+name: compository
+description: ~
+slots:
+  - id: compository
+    provisioning:
+      strategy: create
+      deferred: false
+    dna:
+      bundled: "../../dnas/compository/workdir/compository.dna"
+      properties: ~
+      uuid: ~
+      version: ~
+      clone_limit: 0

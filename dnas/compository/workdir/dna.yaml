@@ -2,9 +2,10 @@
 manifest_version: "1"
 name: compository
 uuid: 00000000-0000-0000-0000-000000000000
-properties: ~
+properties: 
+  file_storage_provider_dna: "uhC0kCyHbf4R99JIOpCtbLFjb09i_5CPdPg4bTOQhGlU9mux_lZtX"
 zomes: 
   - name: compository
     bundled: ../target/wasm32-unknown-unknown/release/compository.wasm
-  - name: file_storage_gateway
-    url: ../target/wasm32-unknown-unknown/release/file_storage_gateway.wasm
+  - name: file_storage
+    bundled: ../target/wasm32-unknown-unknown/release/file_storage_gateway.wasm
